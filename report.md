@@ -1,3 +1,28 @@
+## 12-24 ##
+
+对于/proc/sys下的文件
+
+应该使用 echo 命令，然后从命令行将输出重定向至 /proc 下所选定的文件中。例如： 
+
+    echo "Your-New-Kernel-Value" > /proc/your/file
+
+类似的，如果希望查看 /proc 中的信息，应该使用专门用于此用途的命令，或者使用命令行下的 cat 命令。 
+
+改了/proc/sys/kernel/perf_event_paranoid，改成0之后权限问题似乎没了。
+
+依旧跑不通。偶然情况下，误输入如下命令：
+
+    lkp install hackbench-50%-threads-socket.yaml
+
+结果竟然编译安装了新东西，在根目录下出现了之前的一个报错缺失的内容：`/lkp/benchmark`
+
+而且里面有turbostat！
+
+而且`$LKP_SRC/monitors`里也有了turbostat
+
+现在只剩下`/usr/bin/hackbench`的问题了
+
+
 ## 12-23 ##
 
 `lkp install`仅是安装任务运行所需的依赖程序，不会具体做什么。
