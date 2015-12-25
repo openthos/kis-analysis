@@ -1,3 +1,37 @@
+## 12-25 ##
+
+在使用intel工程师提供的hackbench.c之后，已经可以本机跑出结果了。
+
+之后询问肖洛元学长结果的含义，发现问题没我想的那么简单。
+
+hackbench只是各种测试程序之一，而且有一些程序必须使用虚拟机qemu运行，无法本机跑通。
+
+那些结果实际上是不可读的，最终的目的可能是为了生成一个[报告](https://lists.01.org/pipermail/lkp/2015-December/003278.html)
+
+```
++--------------------------------------------------------------+------------+------------+------------+
+|                                                              | 200757f5d7 | 3ea85149e8 | 8ae5d9cccf |
++--------------------------------------------------------------+------------+------------+------------+
+| boot_successes                                               | 63         | 0          | 0          |
+| boot_failures                                                | 0          | 22         | 19         |
+| WARNING:at_drivers/gpu/drm/drm_crtc.c:#drm_property_create() | 0          | 22         | 19         |
+| backtrace:drm_property_create                                | 0          | 22         | 19         |
+| backtrace:drm_mode_config_init                               | 0          | 22         | 19         |
+| backtrace:bochs_kms_init                                     | 0          | 22         | 19         |
+| backtrace:__pci_register_driver                              | 0          | 22         | 19         |
+| backtrace:drm_pci_init                                       | 0          | 22         | 19         |
+| backtrace:bochs_init                                         | 0          | 22         | 19         |
+| backtrace:kernel_init_freeable                               | 0          | 22         | 19         |
+| IP-Config:Auto-configuration_of_network_failed               | 0          | 0          | 4          |
++--------------------------------------------------------------+------------+------------+------------+
+```
+
+对于使用qemu运行，虚拟机的镜像默认设置是从bee.sh.intel.com获取，而这是内部网站，所以学长之前的处理方式是架设ftp，修改源码($LKP_SRC/lkp_exec/qemu)中的网址，也可以考虑修改host定向到本机的ftp。
+
+关于`lkp compile`学长还演示了一下作用，生成的源码可以导出成`.sh`文件，使用`lkp qemu`运行，实际上之前本机的运行结果文件夹中有0、1、2、...等文件夹，指代每一次运行测试的结果，其中也有job.sh，也是可以用lkp qemu运行的。
+
+所以现在的任务是搭一个FTP，争取能跑通qemu模式。
+
 ## 12-24 ##
 
 对于/proc/sys下的文件
