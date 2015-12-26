@@ -9,3 +9,10 @@
 目标是学习整个流程的细节，基础是复现整个流程，进一步针对安卓ROM替换不同kernel或者ROM相同kernel替换不同上层镜像能得到前后对比的分析报告。
 
 去公司之前的目标是尽可能将LKP的代码弄熟弄透，各种命令尽量跑通。去公司之后，主要针对流程的其他部分进行学习，并且加强对报告分析部分的理解。
+
+
+## 相关参考
+- [Upstream Kernel Testing.pdf](http://elinux.org/images/f/ff/Kernelci.pdf)
+- [Continuous integration for the Linux Kernel - Built within Docker](https://github.com/sanglt/kernel-ci)
+- [LKP--Linux Kernel Performance](https://01.org/zh/lkp)
+- [Automated Linux Kernel Testing](http://kernelci.org/)
