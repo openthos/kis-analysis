@@ -34,4 +34,4 @@ Linux 内核自动测试与动态差异分析研究
 - [Continuous integration for the Linux Kernel - Built within Docker](https://github.com/sanglt/kernel-ci)
 - [LKP--Linux Kernel Performance](https://01.org/zh/lkp)
 - [Automated Linux Kernel Testing](http://kernelci.org/)
-- [lkp-tests git repo](git://git.kernel.org/pub/scm/linux/kernel/git/wfg/lkp-tests.git)
+- git://git.kernel.org/pub/scm/linux/kernel/git/wfg/lkp-tests.git
