@@ -1,3 +1,30 @@
+## 12-26 ## 
+
+昨天晚上把新分配的物理机装上了Archlinux，有某些程度上比Fedora好用，但是毕竟新玩意，搞起来还是出现了一些问题。
+
+还是为了解决`lkp install`的依赖，提示需要一个`yaourt`的东西，我一搜，是一个对pacman做了包装的包管理器，能方便的下载AUR(ArchLinux User-community Repository)里的东西，而AUR如其名是受信任用户提供的软件仓库集合，所以不必像Fedora那样手动加很多repo地址了。
+
+为了下这个，得装一个`package-query`的东西，如果按照[软件官网](https://archlinux.fr/yaourt-en)说明，下载AUR包，然后`makepkg -si`，的确会自动下载安装，但是前提是你能连上仓库的服务器。
+
+喜闻乐见，我连不上，或者说实验室内网连不上（鬼知道.fr是哪的域名！），之后从archlinux的[中文wiki](https://wiki.archlinux.org/index.php/Yaourt_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)上找到了可行的方法，把archlinuxcn这个源加入pacman的设置里就好了！
+
+```
+#中科大源
+[archlinuxcn]
+#The Chinese Arch Linux communities packages.
+SigLevel = Optional TrustAll
+Server   = https://mirrors.ustc.edu.cn/archlinuxcn/$arch
+```
+
+然后按照在之前Fedora上的步骤，把其他依赖也装上就行。
+
+其中一个问题是，`libtool-bin`并不是一个软件的名称，但是直觉告诉我装了libtool就够了，所以我打算故技重施把它从依赖中删除，结果我发现`distro/depends/lkp`里没有它！
+
+我用`grep 'libtool-bin' -rn *` 找了之后，发现在同一目录下的lkp-dev里！我也是醉了。
+
+所以昨天晚上的工作就是这些了。
+
+
 ## 12-25 ##
 
 在使用intel工程师提供的hackbench.c之后，已经可以本机跑出结果了。
@@ -31,6 +58,8 @@ hackbench只是各种测试程序之一，而且有一些程序必须使用虚�
 关于`lkp compile`学长还演示了一下作用，生成的源码可以导出成`.sh`文件，使用`lkp qemu`运行，实际上之前本机的运行结果文件夹中有0、1、2、...等文件夹，指代每一次运行测试的结果，其中也有job.sh，也是可以用lkp qemu运行的。
 
 所以现在的任务是搭一个FTP，争取能跑通qemu模式。
+
+A intersting name: 0 day kernel testing robot.
 
 ## 12-24 ##
 
