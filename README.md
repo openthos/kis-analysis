@@ -20,6 +20,7 @@ Linux 内核自动测试与动态差异分析研究
 - 写出当前的lkp-test设计分析报告
 - 跑通lkp-test的简单实例
 - 理解并写出lkp-test采集的linux kernel运行时状态信息分析
+- **进阶要求：** 把kernel-ci搭建并运行起来
 
 ### 中期检查前：
 - 可跑通＂检测kernel更新 - 分发编译kernel - 用LKP测试一系列benchmark - 将结果与之前的结果进行比对＂的整个流程
