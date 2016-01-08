@@ -1,0 +1,5 @@
+Power statistics from turbostat
+
+By default, the statistics is collected during the benchmark is running. The
+monitor can also be used for arbitrary program by giving the commands as extra
+options.

@@ -1,0 +1,5 @@
+Interrupt statistics from /proc/softirqs
+
+The statistics, including the seconds since epoch, are collected every $interval
+seconds if $interval is defined as an environment variable. Otherwise the
+statistics are collected before and after running the benchmark.

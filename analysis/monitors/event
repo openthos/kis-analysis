@@ -1,0 +1,10 @@
+A pipe-based notification system
+
+Process will be blocked when executing "wait xxx" until some other processes
+execute "wake xxx", where "xxx" is the name of the event and can be any string.
+
+A typical monitor using events:
+* includes lib/wait.sh,
+* invokes setup_wait,
+* waits for a specific event, and
+* prints the statistics.

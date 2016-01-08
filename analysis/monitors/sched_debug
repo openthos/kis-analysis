@@ -1,0 +1,4 @@
+Memory statistics from /proc/sched_debug
+
+The statistics, including the seconds since epoch, are collected every $interval
+seconds (default to 1s). LKP tests use an interval of 60.

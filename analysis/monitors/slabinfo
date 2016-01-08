@@ -1,0 +1,4 @@
+Memory statistics from /proc/slabinfo
+
+The statistics, including the seconds since epoch, are collected every $interval
+seconds (default to 1s).

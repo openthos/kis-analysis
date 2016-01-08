@@ -1,0 +1,6 @@
+CPU, memory, I/O and interrupt statistics from vmstat
+
+Print $count lines for each $interval seconds, where $count and $interval are
+environment variables. By default $interval is 1 and $count is infinite.
+
+Field descriptions can be found in the "man vmstat".

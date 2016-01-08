@@ -1,0 +1,6 @@
+CPU and interrupt statistics from /proc/stat
+
+The statistics, including the seconds since epoch, are collected every $interval
+seconds (default to 1s). LKP tests use an interval of 10.
+
+See fs/proc/stat.c in Linux source tree for details of the fields.

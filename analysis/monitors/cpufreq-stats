@@ -1,0 +1,4 @@
+Power statistics from /sys/devices/system/cpu/cpu*/cpufreq/stats/time_in_state
+
+The statistics, including the seconds since epoch, are collected every $interval
+seconds (default to 1s).

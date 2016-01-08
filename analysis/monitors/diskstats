@@ -1,0 +1,4 @@
+I/O statistics from /proc/diskstat
+
+The statistics, including the seconds since epoch, are collected every $interval
+seconds (default to 1s).
