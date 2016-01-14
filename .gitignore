@@ -2,3 +2,10 @@ update
 deploy
 Gemfile
 Gemfile.lock
+
+bin/cat-*
+bin/gzip-*
+bin/tee-*
+monitors/event/wakeup
+
+run
