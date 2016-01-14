@@ -1,3 +1,20 @@
+## 01-13 ##
+
+到达上海Intel，跟随学长开始接下来的工作。
+
+对于`lkp compare`，需要基于两个`lkp run/qemu`的结果，给出两个任务的编号。
+
+利用肖络元学长新提交的版本中附带的一些镜像`run_img/lkp-qemu-downloads/*`，将其复制到根目录下，并在`lkp-exec/qemu`中调整（/tmp目录位于内存，也可换另外的目录）：
+
+    LKP_SERVER=localhost
+    CACHE_DIR=/tmp/lkp-qemu-downloads
+
+并在两个`wget`处加上`-nc`删去`-N`。
+
+尝试运行，能成功运行`lkp qemu`。
+
+- 我目前的两个主要的任务是弄清楚如何生成.sh文件和如何生成.cgz&.module镜像，而不是必须从公司内部拿现成的。
+
 ## 01-07 ##
 
 可算忙完了开题和一系列期末大作业，可以继续之前的工作了（不过接下去要出去玩几天...）
