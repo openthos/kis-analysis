@@ -1,0 +1,84 @@
+---
+LKP_SERVER: localhost
+LKP_CGI_PORT: 80
+LKP_CIFS_PORT: 139
+testcase: ebizzy
+default-monitors:
+  wait: activate-monitor
+  kmsg:
+  uptime:
+  iostat:
+  vmstat:
+  numa-numastat:
+  numa-vmstat:
+  numa-meminfo:
+  proc-vmstat:
+  proc-stat:
+    interval: 10
+  meminfo:
+  slabinfo:
+  interrupts:
+  lock_stat:
+  latency_stats:
+  softirqs:
+  bdi_dev_mapping:
+  diskstats:
+  nfsstat:
+  cpuidle:
+  cpufreq-stats:
+  turbostat:
+  pmeter:
+  sched_debug:
+    interval: 60
+hdd_partitions:
+ssd_partitions:
+enqueue_time: 2016-01-11 08:50:07.735827318 +08:00
+nr_threads: 200%
+iterations: 100x
+ebizzy:
+  duration: 10s
+cpufreq_governor:
+default-watchdogs:
+  oom-killer:
+  watchdog:
+commit: c13dcf9f2d6f5f06ef1bf79ec456df614c5e058b
+model: Nehalem
+nr_cpu: 2
+memory: 2G
+queue: cyclic
+testbox: localhost
+tbox_group: localhost
+kconfig: x86_64-rhel
+user: lkp
+kernel: "/pkg/linux/x86_64-rhel/gcc-4.9/c13dcf9f2d6f5f06ef1bf79ec456df614c5e058b/vmlinuz-4.2.0-rc8"
+rootfs: debian-x86_64-2015-02-07.cgz
+result_root: "/result/ebizzy/performance-200%-100x-10s/localhost/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/c13dcf9f2d6f5f06ef1bf79ec456df614c5e058b/0"
+dequeue_time: 2016-01-12 07:13:51.562148823 +08:00
+job_file: "/lkp/scheduled/ebizzy-test.yaml"
+initrd: "/osimage/debian/debian-x86_64-2015-02-07.cgz"
+bootloader_append:
+- root=/dev/ram0
+- user=lkp
+- job=/lkp/scheduled/ebizzy-test.yaml
+- ARCH=x86_64
+- kconfig=x86_64-rhel
+- branch=pm/linux-next
+- commit=c13dcf9f2d6f5f06ef1bf79ec456df614c5e058b
+- BOOT_IMAGE=/pkg/linux/x86_64-rhel/gcc-4.9/c13dcf9f2d6f5f06ef1bf79ec456df614c5e058b/vmlinuz-4.2.0-rc8
+- max_uptime=3319
+- RESULT_ROOT=/result/ebizzy/performance-200%-100x-10s/localhost/debian-x86_64-2015-02-07.cgz/x86_64-rhel/gcc-4.9/c13dcf9f2d6f5f06ef1bf79ec456df614c5e058b/0
+- LKP_SERVER=localhost
+- |2-
+
+
+  earlyprintk=ttyS0,115200 systemd.log_level=err
+  debug apic=debug sysrq_always_enabled rcupdate.rcu_cpu_stall_timeout=100
+  panic=-1 softlockup_panic=1 nmi_watchdog=panic oops=panic load_ramdisk=2 prompt_ramdisk=0
+  console=ttyS0,115200 console=tty0 vga=normal
+
+  rw
+lkp_initrd: "/lkp/lkp/lkp-x86_64.cgz"
+modules_initrd: "/pkg/linux/x86_64-rhel/gcc-4.9/c13dcf9f2d6f5f06ef1bf79ec456df614c5e058b/modules.cgz"
+bm_initrd: "/osimage/deps/debian-x86_64-2015-02-07.cgz/lkp.cgz,/osimage/deps/debian-x86_64-2015-02-07.cgz/run-ipconfig.cgz,/osimage/deps/debian-x86_64-2015-02-07.cgz/turbostat.cgz,/lkp/benchmarks/turbostat.cgz,/lkp/benchmarks/ebizzy-x86_64.cgz"
+linux_headers_initrd: "/pkg/linux/x86_64-rhel/gcc-4.9/ca71cfeead38965ee7868a2e97a9206618a0a64e/linux-headers.cgz"
+job_state: booting
