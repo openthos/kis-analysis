@@ -1,7 +1,6 @@
 LKP_SRC ||= ENV['LKP_SRC']
 
 require "#{LKP_SRC}/lib/job.rb"
-require "#{LKP_SRC}/lib/misc.rb"
 
 # JobFeedback: to log job feedbacks for later queries
 class JobFeedback
