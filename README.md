@@ -38,3 +38,5 @@ Linux 内核自动测试与动态差异分析研究
 - [Automated Linux Kernel Testing](http://kernelci.org/)
 - [Automated Linux Kernel Testing in GitHub](https://github.com/kernelci/)
 - git://git.kernel.org/pub/scm/linux/kernel/git/wfg/lkp-tests.git
+- https://github.com/autotest/autotest
+- http://autotest.github.io/
