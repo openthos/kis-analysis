@@ -1,3 +1,20 @@
+## 01-15 ##
+
+与学长的`lkp-test`项目Merge了一下，学到了一些小技巧（git/shell/terminal)。
+
+接下来几天的工作：
+
+- 调现有的BUG，处理`no KERNEL found`，需要能得到`/results/.../ebizzy.json`以及`/results/.../stats.json`。
+- 将已有的流程应用到一个全新的benchmark上：nbench。需要自己写：
+    + `jobs/nbench.yaml`，用于split成对应yaml脚本。
+    + `stats/nbench`，正则化初始输出，变成key:value对的形式，能用于其他脚本将结果进一步转换为`.json`格式。
+    + `pack/nbench`，用于打包成`.cgz`。
+    + `tests/nbench`，指示怎么跑这个benchmark。
+
+直接`run-qemu run-img/ebizzy-test.yaml`会出现`no KERNEL found`，间隔时间很长，可以认为与`lib/bootstrap.sh`中`next_job()`暂停300秒有关，但是直接在此脚本中加入echo没有用。
+
+接下来的调试方法首先得找到能写入有效echo的地方，不然难以弄清其中的流程。
+
 ## 01-14 ##
 
 在尝试不同的运行方式的过程中，逐渐熟悉了整个项目的框架，对于`exec/qemu`、`.sh`文件中的配置有所了解。
