@@ -1,3 +1,28 @@
+## 01-14 ##
+
+在尝试不同的运行方式的过程中，逐渐熟悉了整个项目的框架，对于`exec/qemu`、`.sh`文件中的配置有所了解。
+
+使用茅学长给的`ebizzy-test.yaml`，利用`lkp job2sh ebizzy-test.yaml`生成`.sh`文件，再`lkp qemu ebizzy-test.sh`。
+
+- 阅读`sbin/pack`，了解如何生成`.cgz`文件。
+- 跑通ebizzy这个benchmark后，尝试换一个跑通相同的流程：生成sh、运行`lkp qemu`
+
+在初步阅读`.yaml`文件后，对比正确版本多的东西，可以看到至少在initrd里是需要有测试对应的`.cgz`镜像的，所以需要先从`sbin/pack`下手，生成hackbench的镜像。
+
+阅读了`sbin/pack`的大致内容后，发现它是针对`pack/*`目录下的脚本，下载脚本中url对应的benchmark，而hackbench没有这个脚本（以后有需要也得自己仿照着写），另外考虑到国内能否连上的问题，暂且选取使用`sourceforge.net`的几个benchmark：
+
+    reaim
+    thrulay
+    ebizzy
+    fsmark
+    aim9
+    aim7
+
+fsmark是测文件系统读写速度的，reaim\aim9\aim7都是一整套测各个方面的，thrulay是测网络的，选thrulay进行下一步。
+
+    The program thrulay is used to measure the capacity, delay, and other performance metrics of a network by sending a bulk TCP or UDP stream over it.
+
+
 ## 01-13 ##
 
 到达上海Intel，跟随学长开始接下来的工作。

@@ -1,0 +1,2 @@
+A default shell to be `lkp qemu`'s params. Config a series of params including `memory`, `nr_cpu`, `testbox`, `kconfig`... And determine which tests to run(eg. wrapper, ebizzy)
+The 160 line - "$@" is the mark of end, followed by a series of jobs status(to see whether there is any job stopped unexpectedly, but not really).
