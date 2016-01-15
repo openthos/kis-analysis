@@ -19,11 +19,17 @@ if `whoami`.chomp != 'root'
 	exit 1
 end
 
+$opt_set_key_value = {}
+
 opts = OptionParser.new do |opts|
 	opts.banner = 'Usage: setup-vm [options] <jobfile>'
 
 	opts.separator ''
 	opts.separator 'options:'
+
+	opts.on("-s 'KEY: VALUE'", "--set 'KEY: VALUE'", "add YAML hash to job") do |key_value|
+		$opt_set_key_value.merge!(YAML.load key_value)
+	end
 
 	opts.on_tail('-h', '--help', 'Show this message') do
 		puts opts
@@ -68,6 +74,10 @@ def create_result_root(_result_root)
 	return nil
 end
 
+$opt_set_key_value.each { |k, v|
+	job[k] = v
+}
+
 # Append VM info
 append_fields(job, File.join(LKP_SRC, 'hosts', 'vm-vp-1G'))
 
@@ -84,8 +94,8 @@ kconfig = 'x86_64-rhel'  # FIXME!
 compiler = 'gcc-4.9'  # FIXME!
 commit = 'c13dcf9f2d6f5f06ef1bf79ec456df614c5e058b'  # FIXME!
 
-job['testbox'] = hostname
-job['tbox_group'] = tbox_group(hostname)
+job['testbox'] ||= hostname
+job['tbox_group'] ||= tbox_group(hostname)
 job['branch'] ||= branch
 job['arch'] ||= arch
 job['kconfig'] ||= kconfig
@@ -97,9 +107,10 @@ user = 'lkp'
 job['user'] ||= user
 
 # Append kernel & initrd info
-job['kernel'] ||= "/pkg/linux/#{kconfig}/#{compiler}/#{commit}/vmlinuz-4.2.0-rc8"  # FIXME!
-job['modules_initrd'] ||= "/pkg/linux/#{kconfig}/#{compiler}/#{commit}/modules.cgz"
-job['linux_headers_initrd'] ||= "/pkg/linux/#{kconfig}/#{compiler}/#{commit}/linux-headers.cgz"
+kernel_path = "#{job['kconfig']}/#{job['compiler']}/#{job['commit']}}"
+job['kernel'] ||= "/pkg/linux/#{kernel_path}/vmlinuz-4.2.0-rc8"  # FIXME!
+job['modules_initrd'] ||= "/pkg/linux/#{kernel_path}/modules.cgz"
+job['linux_headers_initrd'] ||= "/pkg/linux/#{kernel_path}/linux-headers.cgz"
 job['rootfs'] ||= 'debian-x86_64'  # FIXME!
 job['initrd'] ||= '/osimage/debian/debian-x86_64-2015-02-07.cgz'  # FIXME!
 job['lkp_initrd'] ||= '/lkp/lkp/lkp-x86_64.cgz'
@@ -107,7 +118,7 @@ bm_initrds = ['/osimage/deps/debian-x86_64-2015-02-07.cgz/lkp.cgz',
 	      '/osimage/deps/debian-x86_64-2015-02-07.cgz/run-ipconfig.cgz',
 	      '/osimage/deps/debian-x86_64-2015-02-07.cgz/turbostat.cgz',
 	      '/lkp/benchmarks/turbostat.cgz']
-bm_initrds << "/lkp/benchmarks/#{job['testcase']}.cgz"
+bm_initrds << "/lkp/benchmarks/#{job['testcase']}-#{job['arch']}.cgz"
 job['bm_initrd'] ||= bm_initrds.join(', ')
 job['max_uptime'] ||= 3300
 
@@ -116,20 +127,20 @@ scheduled_jobfile = File.join('/lkp/scheduled/kvm', File.basename(jobfile))
 job['job'] ||= scheduled_jobfile
 _result_root = job._result_root
 result_root = create_result_root(_result_root)
-job['result_root'] ||= result_root
-job['job_state'] ||= 'booting'
+job['result_root'] = result_root
+job['job_state'] = 'booting'
 
 # Append kernel cmdline
 cmdline_opts = ['root=/dev/ram0',
-		"user=#{user}",
+		"user=#{job['user']}",
 		"job=#{scheduled_jobfile}",
-		"ARCH=#{arch}",
-		"kconfig=#{kconfig}",
-		"branch=#{branch}",
-		"commit=#{commit}",
+		"ARCH=#{job['arch']}",
+		"kconfig=#{job['kconfig']}",
+		"branch=#{job['branch']}",
+		"commit=#{job['commit']}",
 		"BOOT_IMAGE=#{job['kernel']}",
 		"max_uptime=#{job['max_uptime']}",
-		"RESULT_ROOT=#{result_root}",
+		"RESULT_ROOT=#{job['result_root']}",
 		"LKP_SERVER=#{job['LKP_SERVER']}",
 		'earlyprintk=ttyS0,115200',
 		'systemd.log_level=err',
