@@ -1,0 +1,173 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'fileutils'
+
+ENV['LKP_SRC'] ||= File.dirname File.dirname File.realpath $PROGRAM_NAME
+LKP_SRC = ENV['LKP_SRC']
+
+require "#{LKP_SRC}/lib/yaml.rb"
+require "#{LKP_SRC}/lib/stats.rb"
+require "#{LKP_SRC}/lib/matrix.rb"
+require "#{LKP_SRC}/lib/job2sh.rb"
+require "#{LKP_SRC}/lib/job.rb"
+
+TMP = LKP_SRC + '/tmp'
+
+if `whoami`.chomp != 'root'
+	puts 'Please run as root to install packages'
+	exit 1
+end
+
+opts = OptionParser.new do |opts|
+	opts.banner = 'Usage: setup-vm [options] <jobfile>'
+
+	opts.separator ''
+	opts.separator 'options:'
+
+	opts.on_tail('-h', '--help', 'Show this message') do
+		puts opts
+		exit
+	end
+end
+
+if ARGV == []
+	argv = ['-h']
+else
+	argv = ARGV
+end
+opts.parse!(argv)
+
+jobfile = ARGV[0]
+unless jobfile
+	puts 'No jobfile specified'
+	exit 1
+end
+
+job = Job.new
+job.load(jobfile) or (
+	$stderr.puts "#{jobfile} is not a valid jobfile"
+	exit 1
+)
+
+def append_fields(job, yaml_file)
+	load_yaml(yaml_file).each { |k, v|
+		job[k] ||= v
+	}
+end
+
+# Copied from run-local
+def create_result_root(_result_root)
+	0.upto(99) do |i|
+		result_root = "#{_result_root}/#{i}"
+		next if Dir.exist? result_root
+		FileUtils.mkdir_p result_root, :mode => 02775
+		return result_root
+	end
+	$stderr.puts "cannot create more result_roots under #{_result_root}"
+	return nil
+end
+
+# Append VM info
+append_fields(job, File.join(LKP_SRC, 'hosts', 'vm-vp-1G'))
+
+# Append server info
+job['LKP_SERVER'] = 'localhost'
+job['LKP_CGI_PORT'] = 80
+job['LKP_CIFS_PORT'] = 139
+
+# Append build info
+hostname = 'kvm'
+branch = 'linux-next'  # FIXME!
+arch = 'x86_64'  # FIXME!
+kconfig = 'x86_64-rhel'  # FIXME!
+compiler = 'gcc-4.9'  # FIXME!
+commit = 'c13dcf9f2d6f5f06ef1bf79ec456df614c5e058b'  # FIXME!
+
+job['testbox'] = hostname
+job['tbox_group'] = tbox_group(hostname)
+job['branch'] ||= branch
+job['arch'] ||= arch
+job['kconfig'] ||= kconfig
+job['compiler'] ||= compiler
+job['commit'] ||= commit
+
+# Append 'user'
+user = 'lkp'
+job['user'] ||= user
+
+# Append kernel & initrd info
+job['kernel'] ||= "/pkg/linux/#{kconfig}/#{compiler}/#{commit}/vmlinuz-4.2.0-rc8"  # FIXME!
+job['modules_initrd'] ||= "/pkg/linux/#{kconfig}/#{compiler}/#{commit}/modules.cgz"
+job['linux_headers_initrd'] ||= "/pkg/linux/#{kconfig}/#{compiler}/#{commit}/linux-headers.cgz"
+job['rootfs'] ||= 'debian-x86_64'  # FIXME!
+job['initrd'] ||= '/osimage/debian/debian-x86_64-2015-02-07.cgz'  # FIXME!
+job['lkp_initrd'] ||= '/lkp/lkp/lkp-x86_64.cgz'
+bm_initrds = ['/osimage/deps/debian-x86_64-2015-02-07.cgz/lkp.cgz',
+	      '/osimage/deps/debian-x86_64-2015-02-07.cgz/run-ipconfig.cgz',
+	      '/osimage/deps/debian-x86_64-2015-02-07.cgz/turbostat.cgz',
+	      '/lkp/benchmarks/turbostat.cgz']
+bm_initrds << "/lkp/benchmarks/#{job['testcase']}.cgz"
+job['bm_initrd'] ||= bm_initrds.join(', ')
+job['max_uptime'] ||= 3300
+
+# Append job info
+scheduled_jobfile = File.join('/lkp/scheduled/kvm', File.basename(jobfile))
+job['job'] ||= scheduled_jobfile
+_result_root = job._result_root
+result_root = create_result_root(_result_root)
+job['result_root'] ||= result_root
+job['job_state'] ||= 'booting'
+
+# Append kernel cmdline
+cmdline_opts = ['root=/dev/ram0',
+		"user=#{user}",
+		"job=#{scheduled_jobfile}",
+		"ARCH=#{arch}",
+		"kconfig=#{kconfig}",
+		"branch=#{branch}",
+		"commit=#{commit}",
+		"BOOT_IMAGE=#{job['kernel']}",
+		"max_uptime=#{job['max_uptime']}",
+		"RESULT_ROOT=#{result_root}",
+		"LKP_SERVER=#{job['LKP_SERVER']}",
+		'earlyprintk=ttyS0,115200',
+		'systemd.log_level=err',
+		'debug',
+		'apic=debug',
+		'sysrq_always_enabled',
+		'rcupdate.rcu_cpu_stall_timeout=100',
+		'panic=-1',
+		'softlockup_panic=1',
+		'nmi_watchdog=panic',
+		'oops=panic',
+		'load_ramdisk=2',
+		'prompt_ramdisk=0',
+		'console=ttyS0,115200',
+		'console=tty0',
+		'vga=normal',
+		'rw']
+job['bootloader_append'] = cmdline_opts.join(' ')
+
+jobfile_out = File.join('/tmp', scheduled_jobfile)
+FileUtils.mkdir_p(File.dirname(jobfile_out))
+job.save(jobfile_out)
+
+job_script = File.join('/tmp', 'lkp/scheduled/kvm', File.basename(jobfile, '.*') + '.sh')
+File.open(job_script, mode='w', perm=0775) do |file|
+	job2sh(deepcopy(job.to_hash), file)
+end
+
+ENV['RESULT_ROOT'] = result_root
+system "#{LKP_SRC}/lkp-exec/qemu", '-o', result_root, job_script
+system job_script, 'extract_stats'
+
+FileUtils.cp(jobfile_out, result_root + '/job.yaml')
+FileUtils.cp(job_script, result_root + '/job.sh')
+
+stats = create_stats_matrix ENV['RESULT_ROOT']
+stats['stats_source'] = result_root + '/stats.json'
+unite_to(stats, _result_root)
+user = ENV['USER']
+save_paths(result_root, user)
+system(LKP_SRC + '/sbin/unite-params', result_root)
