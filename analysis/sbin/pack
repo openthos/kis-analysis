@@ -1,0 +1,5 @@
+Download benchmark file, compile it and pack it to a `.cgz` file.
+
+More details in `pack/default`.
+
+we need to prepare defferent pack files for each to set the download URL and the way how to install it.

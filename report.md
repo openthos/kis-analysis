@@ -1,3 +1,43 @@
+## 01-19 ##
+
+对于那个难调的BUG，尝试无果之后决定先尝试熟悉改写四个关键脚本。
+
+找到NBenchMark的一个SVN[地址](https://svn.code.sf.net/p/nbenchmark/code/trunk/NBenchmark/)。介绍似乎表明这个是针对Windows的...
+
+    .NET framework to create benchmarks to measure HW and SW performance, identify system bottlenecks, optimize code, automate performance testing. Designed for .NET Full and Compact Frameworks. Supports Windows 2003, 2008, XP, Vista, Mobile 5.0+, CE 5.0+.
+
+1. jobs/*.yaml
+
+split之后的结果，通过对比，发现会添加共同的`default_monitors`、`memory`等，另外原始yaml中的所有键值对会复制到结果中，另如果包含列表，则split会分出多个，每个里面的键值对只含一项。
+
+初步判断在测试同名键值对下的子键值对是test本身需要的参数，其他根级键值对应该是lkp的运行参数。
+
+2. stats/*
+
+考虑到这里的文件本身是ruby脚本，不太好入手，先分析看看如何生成的这些脚本。用grep看了下，在`lib/job2sh.rb`里看到`create_programs_hash "stats/**/*"`，进一步查看这个函数。
+
+在`lib/job.rb`里找到定义。似乎是**枚举**参数中路径的文件判断是否可执行，并将不冲突的程序加入一个全局变量`program`的`[cache_key]`中。所以应该对stats文件的生成没多大关系。
+
+再返回对比一下`stats/ebizzy`和`stats/hackbench`发现共同之处是对line这个变量的信息进行枚举，然后`puts`输出一些东西。联系其目的是正则化测试的初始输出，猜测是对raw data进行一定程度过滤后形成每个测试独有的关键输出结果。所以还需要先对benchmark本身进行较深入的了解。
+
+另外在看代码的过程中，发现对于ruby的语法有点生疏了，需要抽空复习一下。
+
+3. pack/*
+
+关键变量：`BM_ROOT=/lkp/benchmarks/$BM_NAME`，指代benchmark存储的位置。
+
+发现主要打包步骤是在`pack/default`里，我们需要写的只是下载地址和`install`函数。
+
+`install`函数实际上也不是真的安装，主要是将一些必须文件拷贝到`$BM_ROOT`下，以便之后运行。
+
+4. tests/*
+
+直接负责对benchmark程序的运行，针对不同程序撰写不同参数，并且按照iteration设置好迭代次数。
+
+相对来说比较闭环，与`.yaml`文件中的一些参数名有关，会在这涉及，核心就是：
+
+    cmd /usr/bin/$BM_NAME -args
+
 ## 01-15 ##
 
 与学长的`lkp-test`项目Merge了一下，学到了一些小技巧（git/shell/terminal)。
