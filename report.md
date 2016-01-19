@@ -1,3 +1,30 @@
+## 01-20 ##
+
+**周度工作总结：**
+
+整套流程主要分三部分：Build（xll），Test（czh），Data Process（mjj）。
+
+我这几天的工作，是在学长的带领下，对于LKP测试这一块有了更加宏观的理解。
+
+运行`lkp qemu`需要输入：module.cgz/vmlinuz.cgz/linux-headers.cgz(from linux kernel)，benchmark.cgz(need to write script program)，monitors.cgz(lkp automatically)。所以我之前的主要工作就是弄清楚如何写benchmark的几个关键脚本。
+
+而输出的格式为一系列键值对，这是运行过程中记录所有信息的方式，最后会用于`lkp compare`等工具将结果进行汇总比较，得到一个report，这部分是由学长负责。
+
+kernel-ci只需要能监测内核的commit，并针对几个Config(all-yes, all-no, default)编译出内核，包括module镜像。之后便可以用于lkp-test进行测试。
+
+---
+
+**之后的工作**
+
+kernel page，kernel config，除了生成内核的镜像，还会有各个模块，要知道如何将模块安装到指定目录下，看看如何装module，如何编译内核。之后自然会知道vmlinuz是什么，linux-headers暂时不用管，没有这个也可以跑。
+
+run-qemu中需要的镜像里，在`/lkp`下和`/osimage`下（缓存在`/tmp/lkp-qemu-downloads/osimage`）的lkp.cgz和turbostat.cgz有什么区别？为什么需要两个？分别是如何来的？
+
+- 学习编译Linux内核
+- cgz的理解
+- 加一个benchmark(nbench)
+- 之前的Bug
+
 ## 01-19 ##
 
 对于那个难调的BUG，尝试无果之后决定先尝试熟悉改写四个关键脚本。
@@ -134,7 +161,7 @@ Server   = https://mirrors.ustc.edu.cn/archlinuxcn/$arch
 
 在使用intel工程师提供的hackbench.c之后，已经可以本机跑出结果了。
 
-之后询问肖洛元学长结果的含义，发现问题没我想的那么简单。
+之后询问xll学长结果的含义，发现问题没我想的那么简单。
 
 hackbench只是各种测试程序之一，而且有一些程序必须使用虚拟机qemu运行，无法本机跑通。
 
