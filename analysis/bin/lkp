@@ -1,0 +1,4 @@
+lkp-tests' main script. 
+
+`lkp run *.yaml` > run-local
+`lkp run *.sh` > run-local.sh
