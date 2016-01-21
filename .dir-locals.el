@@ -1,2 +1,5 @@
 ((sh-mode . ((sh-basic-offset . 8)
-	     (indent-tabs-mode . t))))
+	     (indent-tabs-mode . t)))
+ (ruby-mode . ((ruby-indent-tabs-mode . t)
+	       (tab-width . 2)
+	       (ruby-indent-level . 2))))
