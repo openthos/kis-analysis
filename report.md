@@ -1,3 +1,15 @@
+## 01-22 ##
+
+之前尽管可以运行`lkp run`，但是有`/lkp/benchmark/nbench`找不到的情况。但是理论上应该是会自动生成的。
+
+手动执行`lkp pack nbench`之后可以运行。
+
+但是nbench本身出了问题：
+
+    CPU:NNET--error in opening file!#  
+
+在测试`LU_DECOMPOSITION`时（或之前），报错停止。直接运行`/lkp/benchmark/nbench`里的可执行文件或者运行之前编译过的`~/Project/benchmark`下的nbench也出现同样的错，暂时不知道原因。
+
 ## 01-21 ##
 
 先在本机试运行nbench，一切正常。
