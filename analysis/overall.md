@@ -7,6 +7,10 @@ Analysis Methods:
 
     [Book]() Chapter Three
 
+Permission：
+
+files under `pack`, `stats` and `tests` need to be **executable**.
+
 Compare:
 
 ```
