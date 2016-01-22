@@ -1,7 +1,7 @@
 #!/bin/bash
 
-WEB_URL="https://byte-unixbench.googlecode.com/files/UnixBench5.1.3.tgz"
-source_dir="UnixBench"
+WEB_URL="https://github.com/kdlucas/byte-unixbench/archive/v5.1.3.tar.gz"
+source_dir="byte-unixbench-5.1.3/UnixBench"
 
 install()
 {
