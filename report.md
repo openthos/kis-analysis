@@ -1,3 +1,41 @@
+## 01-26 ##
+
+**会议**
+
+*lkp-test:*
+
+我们希望能完善`lkp qemu`的功能，缺lkp-dep，解决依赖问题（版本太旧，发行版差异）；要有rootfs、pack（不完整）
+
+之前`lkp qemu`主要用于reproduce，不是主要关注方向（主要是多台机器本机跑）
+
+可以预先把需要的benchmark都pack到image里，或者docker
+
+可以逐步向支持Android靠拢，可能跟`lkp qemu`相关。
+
+bisect?
+
+新的index？data result root
+
+实习生权限比较大，有信息安全的要求。
+
+*data mining:*
+
+数据转换成common format，使用现有的工具包
+
+简单的做起：趋势、稳定度、相关性。看看别人对kernel做的工作，用过什么工具，研究那些方面，看些paper
+
+瓶颈在哪？前端还是后端？
+
+## 01-25 ##
+
+在`pack/nbench`中将`*.DAT`文件也进行复制之后问题解决。
+
+同时微调`stats/nbench`使得最后能提取出三个关键测试指数。
+
+能成功跑通`lkp qemu`，不过最后跑完之后的结果处理还有一些问题。
+
+    gzip -dc ***.cgz | cpio -ivd
+
 ## 01-22 ##
 
 之前尽管可以运行`lkp run`，但是有`/lkp/benchmark/nbench`找不到的情况。但是理论上应该是会自动生成的。
