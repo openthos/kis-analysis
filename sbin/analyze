@@ -1,0 +1,66 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+
+require "#{LKP_SRC}/lib/analyzer.rb"
+require "#{LKP_SRC}/lib/error.rb"
+require 'optparse'
+
+$algorithms = Analyzer.algorithms
+$opt_algorithm = nil
+
+def list_available_algorithms
+	puts "Algorithms available:"
+	$algorithms.each { |al, desc |
+		printf "%15s - %s\n", al, desc['description']
+		desc['parameters'].each { |param, paraminfo|
+			printf "%15s   %s: %s\n", '', param, paraminfo['description']
+			printf "%15s   %s  default = %s\n", '', ' ' * param.size, paraminfo['default']
+		} if desc['parameters']
+	}
+end
+
+opts = OptionParser.new do |opts|
+	opts.banner = 'Usage: analyze [options] data_file [param=value]'
+
+	opts.separator ''
+	opts.separator 'options:'
+
+	opts.on('-a ALGORITHM', '--algorithm ALGORITHM', 'ALGORITHM to use') do |algorithm|
+		unless $algorithms.has_key?(algorithm)
+			puts_err("#{algorithm} is not a known algorithm")
+			puts_err("use --list to see all algorithms available")
+			exit 1
+		end
+		$opt_algorithm = algorithm
+	end
+
+	opts.on('--list', 'list algorithms available') do
+		list_available_algorithms
+		exit
+	end
+
+	opts.on_tail('-h', '--help', 'Show this message') do
+		puts opts
+		exit
+	end
+end
+
+if ARGV == []
+	argv = ['-h']
+else
+	argv = ARGV
+end
+opts.parse!(argv)
+
+exit 1 unless $opt_algorithm
+$opt_csvfile = ARGV.shift
+$opt_csvfile ||= '""' if $opt_algorithm.end_with?('.s')
+exit 1 unless $opt_csvfile
+$opt_parameters = ARGV.map { |param|
+	next unless param =~ /^[-\w_.]+=[-\w_.]+$/
+	param.split('=')
+}.compact
+
+Analyzer.new($opt_algorithm, $opt_parameters).run($opt_csvfile)
