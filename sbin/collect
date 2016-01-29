@@ -1,0 +1,72 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+LKP_SRC = ENV["LKP_SRC"] || File.dirname(File.dirname File.realpath $PROGRAM_NAME)
+
+require "#{LKP_SRC}/lib/data_set.rb"
+require 'optparse'
+
+$opt_conditions = {}
+$opt_format = nil
+$opt_grep  = []
+$opt_vgrep = []
+$opt_file = 'data.csv'
+$opt_no_na = false
+
+opts = OptionParser.new do |opts|
+	opts.banner = "Usage: #{File.basename $PROGRAM_NAME} [options]"
+
+	opts.separator ''
+	opts.separator 'options:'
+
+	opts.on('-c AXIS=VALUE', '--condition AXIS=VALUE', 'only collect data from result roots with AXIS being VALUE') do |condition|
+		if condition =~ /^[-\w_]+=[-\w_]+$/
+			k, v = condition.split('=')
+			$opt_conditions[k] = v
+		else
+			puts_err("Failed to parse condition: #{condition}")
+		end
+	end
+
+	opts.on('-f', '--format FORMAT', 'FORMAT to use for the output file') do |format|
+		$opt_format = format
+	end
+
+	opts.on('-g PATTERN', '--grep PATTERN', 'only collect fields matching PATTERN') do |pattern|
+		$opt_grep.push(Regexp.new(pattern))
+	end
+
+	opts.on('-G PATTERN', '--invert-grep PATTERN', 'only collect fields not matching PATTERN') do |pattern|
+		$opt_vgrep.push(Regexp.new(pattern))
+	end
+
+	opts.on('-o FILE', '--output FILE', 'save collected data to FILE') do |file|
+		$opt_file = file
+	end
+
+	opts.on('--no-na', 'Try hard to exclude all stats w/ N/A.') do
+		$opt_no_na = true
+	end
+
+	opts.on_tail('-h', '--help', 'Show this message') do
+		puts opts
+		exit
+	end
+end
+
+if ARGV == []
+	argv = ['-h']
+else
+	argv = ARGV
+end
+opts.parse!(argv)
+
+ds = DataSet.new($opt_conditions)
+ds.init_fields() if $opt_no_na
+$opt_grep.each { |re|
+	ds.select_fields! { |stat| stat =~ re }
+}
+$opt_vgrep.each { |re|
+	ds.reject_fields! { |stat| stat =~ re }
+}
+ds.save($opt_file, format=$opt_format)
