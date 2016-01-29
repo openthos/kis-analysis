@@ -1,0 +1,7 @@
+#!/bin/bash
+
+file=$1
+algorithm=$2
+shift 2
+
+echo $*

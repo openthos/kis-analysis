@@ -1,3 +1,50 @@
 R:
-  command: ""
+  command: "main.r"
   algorithms:
+    dump:
+      description: "Dump lines as is"
+      subcommand: "dump.block(mydata)"
+    dump.s:
+      description: "Dump streaming lines as is"
+      subcommand: "dump.stream()"
+    standardize:
+      description: "Standarize each column so that the mean and standard variation of every column is 0 and 1. Columns with a variation of 0 are removed."
+      subcommand: "standardize(mydata, \"#{output}\")"
+      parameters:
+        output:
+          description: "file to save the result"
+          default: "standardized.csv"
+    high.cor:
+      description: "List top N pairs of fields with highest correlation"
+      subcommand: "mosthighlycorrelated(mydata, #{N})"
+      parameters:
+        N:
+          description: "number of top field pairs to print"
+          default: 10
+    pca:
+      description: "Principal Component Analysis. Save the top N principle components to a file and print a summary to explained variations."
+      subcommand: "pca(mydata, #{N}, \"#{output}\")"
+      parameters:
+        N:
+          description: "number of principal components to collect"
+          default: 10
+        output:
+          description: "CSV file to save the principal components"
+          default: "pc.csv"
+    pca.s:
+      description: "Incremental Principal Component Analysis. Save the top N principle components to a file."
+      subcommand: "pca.stream(#{N}, \"#{output}\")"
+      parameters:
+        N:
+          description: "number of principal components to collect"
+          default: 10
+        output:
+          description: "CSV file to save the principal components"
+          default: "ipc.csv"
+    plot.line:
+      description: "Plotting as line chart"
+      subcommand: "chart.line(mydata, \"#{output}\")"
+      parameters:
+        prefix:
+          description: "common prefix of output files"
+          default: "plot"
