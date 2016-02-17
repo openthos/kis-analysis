@@ -9,3 +9,6 @@ bin/tee-*
 monitors/event/wakeup
 
 run
+
+*.csv
+*.png
