@@ -6,6 +6,10 @@ Linux 内核自动测试与动态差异分析研究
 ## 概述
 保存针对LKP源码、运行结果的分析，并记录整个过程中遇到的问题。
 
+`analysis`目录为`lkp-tests`项目代码分析文档，详情移步[README](https://github.com/openthos/lkp-analysis/blob/master/analysis/README.md)
+
+代码仓库地址：[lkp-tests](https://github.com/dc3671/lkp-tests)
+
 ## 流程
 整个项目的流程是：
 
