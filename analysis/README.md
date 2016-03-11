@@ -1,3 +1,52 @@
+## How to Run
+
+1. Install necessary packages according to [depend1](https://github.com/dc3671/lkp-tests/blob/master/distro/depends/lkp-dev_bak) and [depend2](https://github.com/dc3671/lkp-tests/blob/master/distro/depends/lkp_bak)
+
+    ```
+    make
+    automake
+    gcc
+    libtool
+    libtool-bin
+    patch
+    git
+    cpio
+    wget
+    ```
+    
+    and
+
+    ```
+    bc
+    gawk
+    linux-tools
+    ruby
+    ruby-gnuplot
+    sysstat
+    time
+    kmod
+    gzip
+    xz-utils
+    ```
+
+2. Add environment variable, using `envsetup.sh`
+
+3. Set correct server address in `bin/run-qemu` - `LKP_SERVER`
+
+4. Run `bin/run-qemu <job-file:*.yaml> <kernel_path:kconfig/compile/commit> <vmlinuz-**-**>`
+
+5. See results at `/result`
+
+## A Important Control Flow
+
+`run-qemu` change `.yaml` to `.sh` and add many important key-value pairs.
+|
+v
+`lkp-exec/qemu` run `.sh` file.
+|
+v
+`lib/kexec.sh`, `lib/qemu.sh`, `lib/unit.sh, `lib/job-init.sh`
+
 ## Directory Illustration
 
 **1. jobs/.yaml**
@@ -53,6 +102,8 @@ how to execute the benchmark. set the args, eg: iteration times, and args set in
     $BENCHMARK_ROOT=/lkp/benchmarks
     $LKP_SRC=<project location>
     $BM_ROOT=/lkp/benchmarks/$BM_NAME`
+
+see `lib/constant-shared.rb`.
 
 ## Compare(FIX ME):
 
