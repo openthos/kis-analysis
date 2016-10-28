@@ -2386,7 +2386,7 @@ num_slabs： 总页数
   "pagetypeinfo.Node0.Normal.Movable": 2610.0,
  
 
- 十六：buddyinfo：物理内存
+  物理内存
 
   "buddyinfo.Node.0.zone.DMA.1": 1.0,
   "buddyinfo.Node.0.zone.DMA.2": 1.0,

@@ -134,28 +134,3 @@ read_ios: 请求次数
 read_merges:发生了多少次read merge
 read_sectors: 读了多少个sector
 read_ticks: read花了多少时间
-
-十：
-uptime.boot：统启动到现在的时间
-uptime.idle：系统空闲的时间
-
-十一：
-Timestamp：间标签表示消息发出的日期和时间
-POLL.time：poll函数调用阻塞的时间
-C1、C3、C6：CPU的几种状态：C1：让CPU闲置(idle)，什么都不做。一旦有新的指令（一个硬件发送的信号）,便会恢复到正常工作水平；C3被称为睡眠状态，cpu无法响应任何外部总线或中断的请求，也就是彻底睡了；C6：会将cpu核心（可以是单一的核心）里所有的寄存器数据挪到一个SRAM（静态内存）里去
-
-十二：perf-stat
-branch-instructions：这段时间内发生分支预测的次数
-branch-misses：这段时间内分支预测失败的次数
-cpu-cycles：CPU时钟周期
-instructions：该进程在这段时间内完成的CPU指令
-L1-dcache-load-misses：一级数据缓存读取失败次数
-L1-dcache-loads：一级数据缓存读取次数
-LLC-load-misses：last level cache读取失败次数
-branch-load-misses：预测错误的分支指令数
-branch-loads：程序在执行期间遇到的分支指令数
-TLB：Translation Lookaside Buffer 数据的DTLB
-iTLB-loads：指令的ITLB
-context-switches：上下文切换次数
-cpu-migrations：处理器迁移
-page-faults：缺页
