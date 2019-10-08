@@ -1,0 +1,17 @@
+daemon/
+├── cassandra-server
+├── httpd
+├── iperf-server
+├── mongodb
+├── nepim-server
+├── netpipe-server
+├── netserver
+├── nfsd
+├── nuttcp-server
+├── qperf-server
+├── redis-server
+├── sockperf-server
+├── tbench-server
+└── thrulay-server
+
+0 directories, 14 files

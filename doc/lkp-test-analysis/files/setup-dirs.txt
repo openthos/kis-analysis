@@ -1,0 +1,59 @@
+setup
+├── acpi_cpufreq
+├── aspm
+├── block_queue
+├── boot_params
+├── cgroup
+├── cgroup2
+├── chrt
+├── cooling_device
+├── cpufreq
+├── cpufreq_governor
+├── cpuidle_cstate
+├── debug-setup
+├── debug_vmlinux
+├── device-dax
+├── dirty_thresh
+├── disk
+├── drop_caches
+├── eatmem
+├── eatmem2 -> eatmem
+├── env
+├── fio-setup-basic
+├── fs
+├── fs1 -> fs
+├── fs2 -> fs
+├── fuse
+├── intel_powerclamp -> cooling_device
+├── intel_pstate
+├── iosched
+├── md
+├── memcached-setup
+├── migratepages
+├── msr
+├── mysql-setup
+├── numactl
+├── nvdimm
+├── offline_cpu
+├── offline_hyperthread
+├── pgbench-setup
+├── pipe_user_pages_soft
+├── ramdisk
+├── resctrl
+├── scsi_debug
+├── scsi_debug_swap
+├── setup-linkbench
+├── setup-nic
+├── setup-oltp
+├── setup-rocksdb
+├── sleep_after_boot
+├── stats_part
+├── stop_daemons
+├── stop_service
+├── swap
+├── swapin_setup
+├── sysctl
+├── taskset
+└── transparent_hugepage
+
+0 directories, 56 files

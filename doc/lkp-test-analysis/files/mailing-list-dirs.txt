@@ -1,0 +1,50 @@
+mailing-list
+├── dpdk
+│   ├── DEFAULTS
+│   └── dpdk
+├── git
+│   ├── DEFAULTS
+│   └── git
+├── linux
+│   ├── alsa-devel
+│   ├── DEFAULTS
+│   ├── dmaengine
+│   ├── dri-devel
+│   ├── driverdev-devel
+│   ├── intel-gfx
+│   ├── intel-wired-lan
+│   ├── kernel-patch-test
+│   ├── kvm
+│   ├── kvm-ppc
+│   ├── linux-acpi
+│   ├── linux-bluetooth
+│   ├── linux-btrfs
+│   ├── linux-ext4
+│   ├── linux-fsdevel
+│   ├── linux-kernel
+│   ├── linux-media
+│   ├── linux-mm
+│   ├── linux-mmc
+│   ├── linux-nfs
+│   ├── linux-omap
+│   ├── linux-pci
+│   ├── linux-pm
+│   ├── linuxppc-dev
+│   ├── linux-raid
+│   ├── linux-rdma
+│   ├── linux-scsi
+│   ├── linux-usb
+│   ├── linux-wireless
+│   ├── netdev
+│   └── netfilter-devel
+├── openvswitch
+│   ├── DEFAULTS
+│   └── openvswitch-dev
+├── qemu
+│   ├── DEFAULTS
+│   └── qemu-devel
+└── xen
+    ├── DEFAULTS
+    └── xen-devel
+
+6 directories, 41 files

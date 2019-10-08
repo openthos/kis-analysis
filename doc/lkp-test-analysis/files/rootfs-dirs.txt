@@ -1,0 +1,89 @@
+rootfs
+├── addon
+│   ├── etc
+│   │   ├── adjtime
+│   │   ├── bash_completion.d
+│   │   │   └── perf
+│   │   ├── default
+│   │   │   ├── kexec
+│   │   │   └── watchdog
+│   │   ├── init.d
+│   │   │   └── lkp-bootstrap
+│   │   ├── rc2.d
+│   │   │   └── S77lkp-bootstrap -> ../init.d/lkp-bootstrap
+│   │   ├── rc5.d
+│   │   │   └── S77lkp-bootstrap -> ../init.d/lkp-bootstrap
+│   │   ├── rc.local
+│   │   ├── systemd
+│   │   │   ├── system
+│   │   │   │   ├── lkp-bootstrap.service -> ../../../usr/lib/systemd/system/lkp-bootstrap.service
+│   │   │   │   ├── multi-user.target.wants
+│   │   │   │   │   └── lkp-bootstrap.service -> ../../../../usr/lib/systemd/system/lkp-bootstrap.service
+│   │   │   │   └── rc-local.service.d
+│   │   │   │       └── override.conf
+│   │   │   └── system.conf
+│   │   ├── watchdog.conf
+│   │   └── X11
+│   │       └── X -> /usr/bin/Xorg
+│   ├── lib
+│   │   └── systemd
+│   │       └── system-generators
+│   │           └── systemd-getty-generator -> /bin/true
+│   ├── root
+│   │   └── bin
+│   │       ├── checkpath
+│   │       └── colors.sh
+│   └── usr
+│       ├── lib
+│       │   └── systemd
+│       │       ├── network
+│       │       │   └── 81-dhcp.network
+│       │       └── system
+│       │           ├── lkp-bootstrap.service
+│       │           └── multi-user.target.wants
+│       │               └── lkp-bootstrap.service -> ../lkp-bootstrap.service
+│       └── local
+│           └── bin
+│               └── ipmi-setup
+├── create-cpio.sh
+├── grub
+│   └── etc
+│       └── rc.local
+├── initramfs-tools
+│   ├── configs
+│   │   ├── initramfs.conf
+│   │   ├── modules
+│   │   └── scripts
+│   │       └── init-bottom
+│   │           └── lkp-modules
+│   ├── create-cpio.sh
+│   └── install
+├── kexec
+│   ├── addon
+│   │   ├── bin
+│   │   │   ├── autologin
+│   │   │   └── gpxelinux -> /etc/rc.d/gpxelinux
+│   │   └── usr
+│   │       └── bin
+│   │           └── setkeymap
+│   ├── create-cpio.sh
+│   ├── etc
+│   │   ├── hosts
+│   │   ├── inittab
+│   │   ├── profile.d
+│   │   │   └── gpxelinux.sh
+│   │   ├── rc.d
+│   │   │   ├── gpxe-config
+│   │   │   ├── gpxelinux
+│   │   │   ├── pxelinux-config
+│   │   │   ├── pxelinux-include
+│   │   │   ├── pxelinux.vim
+│   │   │   ├── rc.inet1
+│   │   │   ├── rc.local
+│   │   │   └── rsync-rootfs -> ../../../../bin/rsync-rootfs
+│   │   └── ssh
+│   │       └── sshd_config
+│   └── run-in-kvm.sh
+└── rootfs-strip-list
+
+40 directories, 46 files

@@ -1,0 +1,20 @@
+sbin
+├── compare
+├── dump-stat
+├── extract-result-stats
+├── job2sh
+├── make.cross
+├── makepkg
+├── makepkg-deps
+├── mmplot
+├── mplot
+├── ncompare
+├── pack
+├── pack-deps
+├── pacman-LKP
+├── split-job
+├── unite-params
+├── unite-stats
+└── update-printk-error-messages
+
+0 directories, 17 files

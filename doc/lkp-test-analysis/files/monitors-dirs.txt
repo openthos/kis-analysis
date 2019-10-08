@@ -1,0 +1,85 @@
+monitors
+├── blktrace
+├── bpfcc-tools
+├── buddyinfo -> proc-vmstat
+├── cat-proc-pid
+├── cpufreq-stats
+├── cpuidle
+├── custom-monitor
+├── debug-monitor
+├── diskstats -> proc-vmstat
+├── energy
+├── ethtool
+├── ftrace
+├── ftrace-event
+├── ftrace-funcgraph
+├── grep_cpuidle
+├── heartbeat -> vmstat
+├── interrupts
+├── iostat
+├── irq_exception_noise
+├── irq_noise
+├── kmsg
+├── kthread_noise
+├── kvm
+├── latency_stats
+├── lock_stat
+├── mdstat
+├── meminfo -> proc-vmstat
+├── mountstats
+├── mpstat
+├── nfs-hang
+├── nfsstat
+├── no-stdout
+│   ├── boot-time
+│   ├── cat-file
+│   ├── perf-c2c
+│   ├── perf-c2c.yaml
+│   ├── perf-mem
+│   ├── perf-profile
+│   ├── perf-pt
+│   ├── perf-report-srcline
+│   ├── sar
+│   ├── trace-cmd
+│   └── wrapper
+├── numa-meminfo
+├── numa-numastat -> numa-meminfo
+├── numa-vmstat -> numa-meminfo
+├── one-shot
+│   ├── bdi_dev_mapping
+│   ├── boot-meminfo
+│   ├── boot-slabinfo
+│   ├── find -> /usr/bin/find
+│   ├── memmap
+│   └── wrapper
+├── oom-killer
+├── pagetypeinfo -> proc-vmstat
+├── perf-node
+├── perf-probe
+├── perf-record-report
+├── perf-sched
+├── perf-stat
+├── plain
+│   ├── wait -> ../../bin/event/wakeup
+│   └── watchdog
+├── pmeter
+├── pmeter_extech
+├── pmeter:yokogawa-wt310
+├── pmu-tools
+├── proc-stat -> proc-vmstat
+├── proc-vmstat
+├── sched_debug -> proc-vmstat
+├── slabinfo -> proc-vmstat
+├── softirqs -> interrupts
+├── stack
+├── syscalls
+├── thermal
+├── top
+├── toplev
+├── turbostat
+├── uptime
+├── vmstat
+├── wrapper
+└── zoneinfo -> proc-vmstat
+
+3 directories, 79 files

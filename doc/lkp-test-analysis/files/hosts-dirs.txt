@@ -1,0 +1,23 @@
+hosts
+├── lituya
+├── lkp-bdw-de1
+├── lkp-bdw-ep6
+├── lkp-bdw-ex2
+├── lkp-hsw-4ex1
+├── lkp-hsw-d01
+├── lkp-hsw-ep4
+├── lkp-ivb-2ep1
+├── lkp-ivb-d01
+├── lkp-ivb-d02
+├── lkp-ivb-d03
+├── lkp-ivb-d04
+├── lkp-nhm-2ep1
+├── lkp-skl-1sp1
+├── lkp-skl-2sp7
+├── lkp-skl-d01
+├── vm-snb-2G-i386
+├── vm-snb-4G
+├── vm-snb-8G
+└── vm-snb-ssd-4G
+
+0 directories, 20 files

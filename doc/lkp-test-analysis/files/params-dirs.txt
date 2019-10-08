@@ -1,0 +1,34 @@
+params
+├── agent_threads -> nr_task
+├── cpuset.cpus
+├── cpuset.mems
+├── disk
+├── eatmem_size -> size
+├── fs
+├── fs1 -> fs
+├── fs2 -> fs
+├── iosched
+├── iterations
+├── mapsize -> test_memory_size
+├── master_threads -> nr_task
+├── md
+├── memcached_memsize -> test_memory_size
+├── memory.high -> test_memory_size
+├── memory.low -> test_memory_size
+├── memory.max -> test_memory_size
+├── message_threads -> nr_threads
+├── mytest
+├── nr_processes -> nr_threads
+├── nr_task -> nr_threads
+├── nr_threads
+├── period
+├── ramdisk_size -> size
+├── runtime
+├── setsize -> test_memory_size
+├── size
+├── test_memory_size
+├── testtime -> runtime
+├── unit_size -> size
+└── worker_threads -> nr_threads
+
+0 directories, 31 files
