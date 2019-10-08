@@ -4,7 +4,7 @@
 
 ### 存在的问题
 
-在所有的这些内涵测试工作中，最大问题就是资源，我们需要更多的人和更多的机器，从而可以更早地发现和修复错误。
+在所有的这些内核测试工作中，最大问题就是资源，我们需要更多的人和更多的机器，从而可以更早地发现和修复错误。
 
 #### bug平均生存期在增加
 
@@ -38,7 +38,7 @@
 
 ### 服务对象
 
-基于开源软件[lkp-test])(https://github.com/intel/lkp-tests.git)，从Linux kernel作为测试服务对象，并逐步过渡到其他大型软件（如，Android， OPNTHOS等）。
+基于开源软件[lkp-test](https://github.com/intel/lkp-tests.git)，从Linux kernel作为测试服务对象，并逐步过渡到其他大型软件（如，Android，OPENTHOS等）。
 
 ### 总体架构
 
@@ -126,7 +126,7 @@ belongs_to: acpica
 
 ##### 获取更新微服务
 
-[更新微服务的原型](https://github.com/openthos/system-analysis/blob/master/updateGIT.sh)后续还需修改。其处理流程是：读取repo列表，解析出repo列表中各个repo的信息，访问相关repo的branch，如果有更新的commit，吧次commit取回，并merge到Linux开发的[next分支](https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git)或[主干分支](https://github.com/torvalds/linux)上。
+[更新微服务的原型](https://github.com/openthos/system-analysis/blob/master/updateGIT.sh)后续还需修改。其处理流程是：读取repo列表，解析出repo列表中各个repo的信息，访问相关repo的branch，如果有更新的commit，把此commit取回，并merge到Linux开发的[next分支](https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git)或[主干分支](https://github.com/torvalds/linux)上。
 
 注意事项和潜在问题
 
@@ -234,7 +234,7 @@ belongs_to: acpica
 
     - [Assembling a kernel test grid with autotest](https://mybravenewworld.wordpress.com/2012/11/10/assembling-a-kernel-test-grid-with-autotest/)
 
-  - https://kernelci.org/是一个旨在使内核测试更加自动化和可见的项目，它似乎只做构建和启动测试（TODO如何自动测试启动工作源应该在https://github.com/kernelci/）。[Linaro](http://www.linaro.org/)似乎是该项目的主要维护者，得到了许多大公司的贡献：[https](https://kernelci.org/sponsors/)：[//kernelci.org/sponsors/](https://kernelci.org/sponsors/)
+  - https://kernelci.org/　是一个旨在使内核测试更加自动化和可见的项目，它似乎只做构建和启动测试（TODO如何自动测试启动工作源应该在https://github.com/kernelci/　）。[Linaro](http://www.linaro.org/)似乎是该项目的主要维护者，得到了许多大公司的贡献：[https://kernelci.org/sponsors/](https://kernelci.org/sponsors/)
 
   - [**Linaro Lava**](http://www.linaro.org/initiatives/lava/)看起来像一个CI系统，专注于开发板启动和Linux内核。
 
