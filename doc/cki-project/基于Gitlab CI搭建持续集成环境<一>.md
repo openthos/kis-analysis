@@ -48,5 +48,3 @@ GitLab CI是 GitLab 提供的持续集成服务，只要在你的仓库根目录
 - 在仓库根目录创建一个名为.gitlab-ci.yml 的文件
 - 为该项目配置一个Runner
 完成上面的步骤后，每次push代码到Git仓库， Runner就会自动开始pipeline。
-
-## 基于Gitlab CI快速搭建持续集成环境
