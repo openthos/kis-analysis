@@ -44,7 +44,8 @@ sudo  gitlab-ci-multi-runner register
 - 输入 Runner 描述（e.g. Test for CI  测试runner）
 - 输入 Runner 标签，可以多个，用逗号隔开（e.g. mdx,tinghua）
 - 输入 Runner 执行的语言 (e.g. shell)
-
+如下图：
+![Image text](https://github.com/openthos/community-analysis/blob/master/Daily%20Report/cki-runner-register.png)
 
 注册完成之后，GitLab-CI就会多出一条Runner记录，如下图所示：
 ![Image text](https://github.com/openthos/community-analysis/blob/master/Daily%20Report/test.png)
@@ -52,5 +53,5 @@ sudo  gitlab-ci-multi-runner register
 ## 让注册好的Runner运行起来
 Runner注册完成之后还不行，还必须让它运行起来，否则它无法接收到GitLab-CI的通知并且执行软件集成脚本。怎么让Runner运行起来呢？gitlab-ci-multi-runner提供了这样一条命令:
 ```
-sudo gitlab-runner start
+sudo gitlab-ci-multi-runner  start
 ```
