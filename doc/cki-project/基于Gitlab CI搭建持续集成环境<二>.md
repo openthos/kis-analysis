@@ -8,6 +8,7 @@ GitLab-Runner是配合GitLab-CI进行使用的。一般地，GitLab里面的每�
 
 所以，GitLab-Runner就是一个用来执行软件集成脚本的东西。你可以想象一下：Runner就像一个个的工人，而GitLab-CI就是这些工人的一个管理中心，所有工人都要在GitLab-CI里面登记注册，并且表明自己是为哪个工程服务的。当相应的工程发生变化时，GitLab-CI就会通知相应的工人执行软件集成脚本。如下图所示：
 ![Image text](https://upload-images.jianshu.io/upload_images/525728-4339103186d2b1c9.png?imageMogr2/auto-orient/strip|imageView2/2/w/550/format/webp)
+
 Runner可以分布在不同的主机上，同一个主机上也可以有多个Runner。
 
 ## Runner类型
