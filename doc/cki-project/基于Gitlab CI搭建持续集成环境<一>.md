@@ -102,4 +102,6 @@ Jobs 表示构建工作，表示某个 Stage 里面执行的工作。 我们可�
 
 想问为什么不是 GitLab CI 来运行那些构建任务？ 一般来说，构建任务都会占用很多的系统资源 (譬如编译代码)，而 GitLab CI 又是 GitLab 的一部分，如果由 GitLab CI 来运行构建任务的话，在执行构建任务的时候，GitLab 的性能会大幅下降。
 
-GitLab CI 最大的作用是管理各个项目的构建状态，因此，运行构建任务这种浪费资源的事情就交给 GitLab Runner 来做拉！ 因为 GitLab Runner 可以安装到不同的机器上，所以在构建任务运行期间并不会影响到 GitLab 的性能~
+GitLab CI 最大的作用是管理各个项目的构建状态，因此，运行构建任务这种浪费资源的事情就交给 GitLab Runner 来完成！ 因为 GitLab Runner 可以安装到不同的机器上，所以在构建任务运行期间并不会影响到 GitLab 的性能！
+
+GitLab-CI与GitLab-Runner的关系，请参照[基于Gitlab CI搭建持续集成环境<二>](https://github.com/openthos/kis-analysis/blob/master/doc/cki-project/%E5%9F%BA%E4%BA%8EGitlab%20CI%E6%90%AD%E5%BB%BA%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E7%8E%AF%E5%A2%83%3C%E4%BA%8C%3E.md)
