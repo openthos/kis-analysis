@@ -49,7 +49,7 @@ sudo  gitlab-ci-multi-runner register
 ![Image text](https://github.com/openthos/community-analysis/blob/master/Daily%20Report/cki-runner-register.png)
 
 注册完成之后，GitLab-CI就会多出一条Runner记录，如下图所示：
-![Image text](https://github.com/openthos/community-analysis/blob/master/Daily%20Report/test.png)
+![Image text](https://github.com/openthos/community-analysis/blob/master/Daily%20Report/runner.png)
 
 ## 让注册好的Runner运行起来
 Runner注册完成之后还不行，还必须让它运行起来，否则它无法接收到GitLab-CI的通知并且执行软件集成脚本。怎么让Runner运行起来呢？gitlab-ci-multi-runner提供了这样一条命令:
