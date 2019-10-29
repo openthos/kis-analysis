@@ -7,7 +7,7 @@ GitLab-CI就是一套配合GitLab使用的持续集成系统（当然，还有�
 GitLab-Runner是配合GitLab-CI进行使用的。一般地，GitLab里面的每一个工程都会定义一个属于这个工程的软件集成脚本，用来自动化地完成一些软件集成工作。当这个工程的仓库代码发生变动时，比如有人push了代码，GitLab就会将这个变动通知GitLab-CI。这时GitLab-CI会找出与这个工程相关联的Runner，并通知这些Runner把代码更新到本地并执行预定义好的执行脚本。
 
 所以，GitLab-Runner就是一个用来执行软件集成脚本的东西。你可以想象一下：Runner就像一个个的工人，而GitLab-CI就是这些工人的一个管理中心，所有工人都要在GitLab-CI里面登记注册，并且表明自己是为哪个工程服务的。当相应的工程发生变化时，GitLab-CI就会通知相应的工人执行软件集成脚本。如下图所示：
-![Image text](https://upload-images.jianshu.io/upload_images/525728-4339103186d2b1c9.png?imageMogr2/auto-orient/strip|imageView2/2/w/550/format/webp)
+![Image text](https://github.com/openthos/community-analysis/blob/master/Daily%20Report/1.png)
 
 Runner可以分布在不同的主机上，同一个主机上也可以有多个Runner。
 
@@ -28,13 +28,10 @@ https://gitlab.com/gitlab-org/gitlab-ci-multi-runner
 向GitLab-CI注册一个Runner需要两样东西：GitLab-CI的url和注册token。
 其中，token是为了确定你这个Runner是所有工程都能够使用的Shared Runner还是具体某一个工程才能使用的Specific Runner。
 
-如果要注册Shared Runner，你需要到管理界面的Runners页面里面去找注册token。如下图所示：
-
-![Image text](https://upload-images.jianshu.io/upload_images/525728-e4141cc2a2d4f986.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
 
 如果要注册Specific Runner，你需要到项目的设置的Runner页面里面去找注册token。如下图所示：
 
-![Image text](https://upload-images.jianshu.io/upload_images/525728-bc5f1e385c2beb45.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![Image text](https://github.com/openthos/community-analysis/blob/master/Daily%20Report/runner.png)
 
 找到token之后，运行下面这条命令注册Runner（当然，除了url和token之外，还需要其他的信息，比如执行器executor、构建目录builds_dir等）。
 ```
