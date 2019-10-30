@@ -55,7 +55,11 @@
 
 首先是把Linux kernel作为测试服务对象。
 
-在测试运行部分，可基于开源软件[lkp-test](https://github.com/intel/lkp-tests.git)，从Linux kernel作为测试服务对象，并逐步过渡到其他大型软件（如，Android，OPENTHOS等）。
+在测试运行部分，可基于开源软件[lkp-test](https://github.com/intel/lkp-tests.git)，从Linux kernel作为测试服务对象，并逐步过渡到其他大型软件（如 Android，OPENTHOS等）。
+
+### 硬件环境
+
+两层分布式架构（外层基于internet互联，由m个local network组成；内层基于local network，由n台服务器（CPU不限）组成）。
 
 ### 总体架构
 
@@ -71,19 +75,23 @@ graph TD
 A[服务部署与调度模块] -.->|调度|B(对象采集与配置模块)
     A -.-> |调度|C(对象静态和动态执行模块)
     A -.-> |调度|D(对象分析与bug报告模块)
-    B ==> |创建微服务|C
-    C ==> |创建微服务|D
-    D ==> |创建微服务|C
+    B ==> |创建编译/静态分析/动态执行微服务|C
+    C ==> |创建数据分析微服务|D
+    D ==> |基于二分法创建回归测试微服务|B
 ```
 
 ### 注意事项和潜在问题
 
+- 绝大部分微服务都是无状态的，即可以从某个微服务开始，重现整个执行流程。
+- 总调度服务和二分法分析服务是两个特殊的有状态的服务。
 - 微服务即相对独立运行的功能单一的小程序，可被部署到不同的节点运行。
 - 如何部署各个微服务所需的数据（git repo, 编译结果，运行结果等）？
 
 ## 详细设计
 
 ### 服务部署与调度模块
+
+#### 功能描述
 
 本模块本质上是一个分布式任务调度系统。主要是对各种微服务进行排队，并根据系统中的机器情况进行负载均衡的微服务调度。每个微服务相对独立，接受输入并产生输出，且可以创建新的微服务。微服务之间是松耦合的关系。下面的箭头关系是自创建微服务（可能是创建1～n个微服务）。
 
@@ -108,19 +116,77 @@ G-.->|错&非bug|K
 G-.->|bug|M[生成报告]
 G-.->|bug|M
 G-.->|bug|M
+G-.->|二分法回归测试|A
 
 ```
 
 - bug：表示找到了最接近触发错误的bug的commit
 - 错&非bug：表示此commit在编译/静态分析/运行时系统认为有错，但还不是触发错误的bug
 
+#### 部署方式
+
+局域网环境下，每台机器上部署一个local调度部署service（无状态），选定一台机器部署一个全局的有状态的global调度部署service（TODO：未来考虑单点故障问题）。
+
+#### 实现：局域网模式调度部署服务
+
+逻辑上有一个global调度部署service和分布在各个物理机器上的local调度部署service。具体内容如下：
+
+##### global调度部署service： 创建服务
+
+```
+global scheduling service
+input: 
+     from: local secheduling service(originally from other micro service)
+     argument: microservice-requirement from any nodes in local network
+body:
+     check the working queues (some kind: compiling, testing, analysis...)
+     find the lowest overhead node, and spawn new microservice in this node
+     update the working queues of all nodes.
+output:
+     to: log service 
+     log info about the results(success or failed) of spawn 
+```
+
+##### global调度部署service： 服务结束
+
+```
+global scheduling service
+input: 
+     from: local secheduling service
+     argument: microservice finish info
+body:
+     update working queues (some kind: compiling, testing, analysis...)
+output:
+     to: log service 
+     log info about the results(success or failed) of update 
+```
+
+##### local调度部署service： 通知更新服务
+
+```
+local scheduling service
+input: 
+     from: local micro service
+     argument: microservice-requirement/finishment from local nodes
+body:
+    check validity of the requirement
+    send microservice requirement/finishment info to global scheduling service
+output:
+     to: log service 
+     log info about the results(success or failed) of spawn     
+```
+
+#### 实现：广域网模式 TODO
+
+
+
 ### 对象采集与配置模块
 
 负责从内核开发人员的git存储库中提取更新的内核源代码，配置内核，并生成用于编译和静态分析的分析目标列表。由如下微服务组成。
 
-#### 采集服务
+#### 采集(获取更新)功能描述
 
-采集服务由repo列表、更新微服务、配置微服务等组成。
+采集服务由repo列表、更新微服务、配置微服务等组成。采用轮询方式查找internel上百个git repo中的更新情况，如果有更新，则merge到本地。有一个节点进行总merge，由在其他node海上的节点进行merge成功后的面向编译的本地merge。
 
 ##### repo列表
 
@@ -142,9 +208,23 @@ belongs_to: acpica
     - lkp@intel.com
   ```
 
-##### 获取更新微服务
+#### 部署方式
 
-[更新微服务的原型](https://github.com/openthos/system-analysis/blob/master/updateGIT.sh)后续还需修改。其处理流程是：读取repo列表，解析出repo列表中各个repo的信息，访问相关repo的branch，如果有更新的commit，把此commit取回，并merge到Linux开发的[next分支](https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git)或[主干分支](https://github.com/torvalds/linux)上。
+局域网环境下，每台机器上部署一个local调度部署service（无状态），选定一台机器部署一个全局的有状态的global调度部署service（TODO：未来考虑单点故障问题）。
+
+#### 实现：获取更新微服务
+
+[更新微服务的原型](https://github.com/openthos/system-analysis/blob/master/updateGIT.sh)后续还需修改。其处理流程是：
+
+```
+input
+body
+读取repo列表，解析出repo列表中各个repo的信息，访问相关repo的branch，如果有更新的commit，把此commit取回，并merge到Linux开发的[next分支](https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git)或[主干分支](https://github.com/torvalds/linux)上。
+
+
+```
+
+
 
 注意事项和潜在问题
 
