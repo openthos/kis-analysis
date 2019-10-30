@@ -306,6 +306,7 @@ body
 ### 项目
 
 - [Linux 内核实验室](https://gitee.com/tinylab/linux-lab)
+
 - kexec：**一个系统调用，允许您将另一个内核放入内存并重新启动而无需返回BIOS，如果失败，可重新启动。
 
 - **dmesg：**是寻找有关内核启动期间发生的事情以及是否有效/无效的信息的地方。
@@ -344,11 +345,50 @@ body
   - gentoo kernel CI :  https://github.com/gentoo/Gentoo_kernelCI
     - [Recently working with docker](https://github.com/aliceinwire/GkernelCI_docker
 ) 
+    
   - [CKI(Continuous Kernel Integration )roject](https://gitlab.com/cki-project)
+  
+- 其他CI
+
+  - [Buildbot by python3](http://buildbot.net/)
+
+  - [agola.io by go](https://agola.io/ )
+
+  - [zuul by python](https://zuul-ci.org/)
+
+  - [sr.ht by python](https://git.sr.ht/)
+
+  - [laminar by cpp](https://laminar.ohwg.net/)
+
+  - [concourse by go](https://concourse-ci.org/)
+
+  - [GoCD by java](https://www.gocd.org/)
+
+  - [Jenkins by java](https://jenkins.io/)
+
+  - [Travis CI by ruby+shell](https://github.com/travis-ci/)
+
+  - [GitLab CI by ruby](https://gitlab.com/gitlab-org/gitlab-ce/)
+
+    - GitLab CI / CD完成GitLab 的构建，测试和部署机制同样直接连接到其 Git 存储库，因此可以根据规则触发。该过程主要围绕 Docker 容器构建，可以大大简化围绕 Jenkins 构建必须完成的一些配置工作。构建任务可以针对任何语言，但必须由 GitLab Runner 触发，GitLab Runner 是一个用 Go 编写的自动缩放工具，适用于大多数平台。这种灵活性意味着可以在其他计算机上触发任何任务，这对于精心设计的架构而言可能非常有用，这些架构不仅仅提供微服务。
+
+  - [spinnaker by python]([http://www.spinnaker.io](http://www.spinnaker.io/))
+
+  - [Screwdriver by node.js](https://github.com/screwdriver-cd/screwdriver)
+
+  - [Rainbond 中国 企业应用云操作系统 by go ](https://t.goodrain.com/)
+
+  - [taskcluster by js python go](https://github.com/taskcluster)
+
+    
 
 ### 书或其他信息
 
 - [linux内核测试指南.pdf]([http://read.pudn.com/downloads228/doc/1070267/linux%E5%86%85%E6%A0%B8%E6%B5%8B%E8%AF%95%E6%8C%87%E5%8D%97.pdf](http://read.pudn.com/downloads228/doc/1070267/linux内核测试指南.pdf))
-- [Linux内核测试现状揭秘](https://zhuanlan.zhihu.com/p/66896250)
+- [推荐一些顶级的开源CI/CD工具Linux内核测试现状揭秘](https://zhuanlan.zhihu.com/p/66896250)
 - [KS2012: Kernel build/boot testing](https://lwn.net/Articles/514278/) 一篇关于基础设施的好文章
+- [推荐一些顶级的开源CI/CD工具](https://blog.csdn.net/zl1zl2zl3/article/details/85523461)
+- [7款不错的 CI/CD工具](https://blog.csdn.net/M2l0ZgSsVc7r69eFdTj/article/details/82504312)
+- [推荐 10 个好用的 CI/CD 工具](推荐 10 个好用的 CI/CD 工具)
+- [gitlab中CI/CD自动化部署使用](https://blog.csdn.net/junmoxi/article/details/82762413)
 
