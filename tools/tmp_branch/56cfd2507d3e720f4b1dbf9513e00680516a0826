@@ -1,0 +1,2 @@
+#!/bin/bash
+/bin/bash /home/oto/thecode/cki/test.sh origin/master 56cfd2507d3e720f4b1dbf9513e00680516a0826
