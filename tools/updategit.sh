@@ -19,9 +19,7 @@ function init_git_env() {
 	cd $linux_repo
 	# TBD: need get origin and master  from git remote -v
 	git init
-	git config --global user.name "Midysen"
-	git config --global user.email "miaodexing@126.com"
-	git remote add origin http://192.168.0.99/root/linux.git
+	git remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/linux.git
 	git fetch origin master
 
 	if [ $? -ne 0 ]; then
