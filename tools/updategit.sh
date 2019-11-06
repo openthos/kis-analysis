@@ -19,7 +19,7 @@ function init_git_env() {
 	cd $linux_repo
 	# TBD: need get origin and master  from git remote -v
 	git init
-	git remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/linux.git
+	git remote add origin https://mirrors.tuna.tsinghua.edu.cn/git/linux.git
 	git fetch origin master
 
 	if [ $? -ne 0 ]; then
