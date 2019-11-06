@@ -100,5 +100,5 @@ while(true)
 do
 	init_git_env
 	remote_branch
-	sleep  5
+	sleep  5m
 done
