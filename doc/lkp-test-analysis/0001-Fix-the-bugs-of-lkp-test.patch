@@ -1,0 +1,154 @@
+From 425b1713c211b159ba449987198502fd80d97f05 Mon Sep 17 00:00:00 2001
+From: Midysen <miaodexing@126.com>
+Date: Mon, 25 Nov 2019 16:38:01 +0800
+Subject: [PATCH] Fix the bugs of lkp-test
+
+---
+ lkp-exec/qemu                         | 24 +++++++++++++++---------
+ pack/default                          | 10 ++++++----
+ rootfs/addon/etc/init.d/lkp-bootstrap |  1 +
+ sbin/pack                             |  1 +
+ 4 files changed, 23 insertions(+), 13 deletions(-)
+
+diff --git a/lkp-exec/qemu b/lkp-exec/qemu
+index df5c6df3..5f6e1c05 100755
+--- a/lkp-exec/qemu
++++ b/lkp-exec/qemu
+@@ -124,6 +124,7 @@ create_job_initrd()
+ 	[[ -d $CACHE_DIR/$job_initrd_dir ]] && rm -rf "$CACHE_DIR/$job_initrd_dir"
+ 	mkdir -p $CACHE_DIR/$job_initrd_dir
+ 	cp $job_script $job_sh
++	cp $job_file $CACHE_DIR/$job_file
+ 	chmod +x $job_sh
+ 	local archive=$CACHE_DIR/job
+ 	(
+@@ -263,17 +264,10 @@ job_initrd=$CACHE_DIR/${job_file%.yaml}-$job_sig.cgz
+ job_initrd_dir=${job_file%/*}
+ [[ -f $job_initrd ]] || create_job_initrd
+ 
+-# if job.sh not include bootloader_append entry, add default content
+-if [ -n "$bootloader_append" ]; then
+-	bootloader_append=$(echo "$bootloader_append" | tr '\n' ' ' | sed -e 's/ttyS[1-9],/ttyS0,/g')
+-else
+-	bootloader_append="root=/dev/ram0 job=$job_file user=$user  ARCH=x86_64 kconfig=x86_64-rhel commit=051d101ddcd268a7429d6892c089c1c0858df20b branch=linux-devel/devel-hourly-2015033109 max_uptime=1247 RESULT_ROOT=$result_root earlyprintk=ttyS0,115200 rd.udev.log-priority=err systemd.log_target=journal systemd.log_level=warning debug apic=debug sysrq_always_enabled rcupdate.rcu_cpu_stall_timeout=100 panic=-1 softlockup_panic=1 nmi_watchdog=panic oops=panic load_ramdisk=2 prompt_ramdisk=0 console=ttyS0,115200 console=tty0 vga=normal rw"
+-fi
+-
+ # create vm result path
+ if [ -z $opt_result_root ]; then
+ 	# create real result_root layout similar to the one in inn:/result
+-	_result_root=$HOME/.lkp/$(dirname $result_root)
++	_result_root=$HOME/.lkp/$(dirname "$result_root")
+ 	for i in {0..1000}
+ 	do
+ 		vm_result_path=$_result_root/$i
+@@ -288,8 +282,11 @@ if [ -z $opt_result_root ]; then
+ else
+ 	vm_result_path=$opt_result_root
+ fi
++
++[[ $result_root ]] || result_root=$vm_result_path
+ mkdir -p $vm_result_path
+ 
++HTTP_PREFIX=http://192.168.0.77/lkp-qemu
+ if [[ $HTTP_PREFIX ]]; then
+ 	: # use environment value
+ elif [[ $HOSTNAME = inn ]]; then
+@@ -304,12 +301,21 @@ fi
+ LKP_USER="lkp"
+ : ${QEMU_MODEL:='qemu-system-x86_64'}
+ 
++# if job.sh not include bootloader_append entry, add default content
++if [ -n "$bootloader_append" ]; then
++	bootloader_append=$(echo "$bootloader_append" | tr '\n' ' ' | sed -e 's/ttyS[1-9],/ttyS0,/g')
++else
++	#bootloader_append="root=/dev/ram0 job=$job_file user=$user  ARCH=x86_64 kconfig=x86_64-rhel commit=051d101ddcd268a7429d6892c089c1c0858df20b branch=linux-devel/devel-hourly-2015033109 max_uptime=1247 RESULT_ROOT=$result_root earlyprintk=ttyS0,115200 ignore_loglevel rd.udev.log-priority=err systemd.log_target=journal systemd.log_level=warning debug apic=debug sysrq_always_enabled rcupdate.rcu_cpu_stall_timeout=100 panic=-1 softlockup_panic=1 nmi_watchdog=panic oops=panic load_ramdisk=2 prompt_ramdisk=0 console=tty0 console=ttyS0,115200 vga=normal rw"
++	bootloader_append="root=/dev/ram0 job=$job_file user=$user  ARCH=x86_64 kconfig=x86_64-rhel max_uptime=1247 RESULT_ROOT=$result_root earlyprintk=ttyS0,115200 ignore_loglevel rd.udev.log-priority=err systemd.log_target=journal systemd.log_level=warning debug apic=debug sysrq_always_enabled rcupdate.rcu_cpu_stall_timeout=100 panic=-1 softlockup_panic=1 nmi_watchdog=panic oops=panic load_ramdisk=2 prompt_ramdisk=0 console=tty0 console=ttyS0,115200 vga=normal rw"
++fi
++
+ run_kvm()
+ {
+ 	trap - EXIT
+ 
+ 	local job_script=$1
+ 	local mem_mb="$(max_sane_qemu_memory $memory)"
++	mem_mb="3G"
+ 	local mount_tag=9p/virtfs_mount
+ 	local need_mem
+ 	need_mem="$(get_job_env $job_script 'need_memory')" || return
+@@ -343,7 +349,7 @@ run_kvm()
+ # lkp qemu alway log guest to stdout
+ setup_qemu_console()
+ {
+-	qemu_console_option="-display none -monitor null -serial stdio"
++	qemu_console_option="-display none -serial stdio"
+ }
+ 
+ get_qemu_kernel_initrd $lkp_initrd $job_initrd
+diff --git a/pack/default b/pack/default
+index 9aa833c1..1814cbaf 100755
+--- a/pack/default
++++ b/pack/default
+@@ -10,15 +10,16 @@ pre_download()
+ download()
+ {
+ 	pre_download
++
+ 	for url in $WEB_URL
+ 	do
+-		wget -t 3 -T 10 --no-clobber $url && break
++		[[ ! -f /tmp/$(basename $url) ]] && wget -t 3 -T 10 --no-clobber $url -P /tmp/ && break
+ 	done
+ 	[[ $source_package ]] || source_package=$(basename $url)
+ 	[[ $source_dir     ]] || source_dir=${source_package%%.tar.*}
+ 	[[ $source_dir     ]] || source_dir=${source_package%%.tgz}
+ 	[[ -d $source_dir ]] ||
+-	tar xf "$source_package"
++	tar xf "/tmp/$source_package"
+ }
+ 
+ patch_source()
+@@ -67,6 +68,7 @@ pack_deb()
+ 	EOF
+ 
+ 	cd /tmp
++	echo "pack/default in $(pwd), dpkg-deb --build $pkg_name"
+ 	dpkg-deb --build $pkg_name
+ }
+ 
+@@ -147,7 +149,7 @@ post_cleanup()
+ 
+ cleanup()
+ {
+-	[[ $source_package ]] && rm -f  "$BUILD_DIR/${source_package}"
+-	[[ $source_dir     ]] && rm -fr "$BUILD_DIR/${source_dir}"
++	#[[ $source_package ]] && rm -f  "$BUILD_DIR/${source_package}"
++	#[[ $source_dir     ]] && rm -fr "$BUILD_DIR/${source_dir}"
+ 	post_cleanup
+ }
+diff --git a/rootfs/addon/etc/init.d/lkp-bootstrap b/rootfs/addon/etc/init.d/lkp-bootstrap
+index dfd44197..f8e48fdd 100755
+--- a/rootfs/addon/etc/init.d/lkp-bootstrap
++++ b/rootfs/addon/etc/init.d/lkp-bootstrap
+@@ -36,6 +36,7 @@ read_kernel_cmdline_vars()
+ 		[ "${i#user=}" != "$i" ] && export $i
+ 		[ "${i#job=}" != "$i" ] && export $i
+ 		[ "${i#ip=}" != "$i" ] && export $i
++		[ "${i#RESULT_ROOT}" != "$i" ] && export $i
+ 		[ "${i#NO_NETWORK=}" != "$i" ] && export $i
+ 		[ "${i#result_service}" != "$i" ] && export $i
+ 	done
+diff --git a/sbin/pack b/sbin/pack
+index 4d36ff2f..adcd08e7 100755
+--- a/sbin/pack
++++ b/sbin/pack
+@@ -115,6 +115,7 @@ if [[ "$LKP_LOCAL_RUN" != "1" ]]; then
+ 	# for 0Day
+ 	pack_pkg || exit
+ else
++	pack_pkg
+ 	pack_pkg $distro || exit
+ fi
+ 
+-- 
+2.17.1
+
